@@ -23,7 +23,7 @@ console.log('connected to database');
 // database and collections 
 const database = client.db("healthCoaching");
 const coachingCollection = database.collection("coaching");
-const orderCollection = database.collection("orders");
+const orderCollection = database.collection("confirmOrder");
 
 // get api for all products
 app.get('/coaching', async(req,res)=>{
@@ -32,12 +32,12 @@ app.get('/coaching', async(req,res)=>{
     res.send(products);
   });
 
-  // get api for all orders 
-  app.get('/orders', async(req,res)=>{
-    const cursor = orderCollection.find({});
-   const orders = await cursor.toArray();
-   res.send(orders);
-  });
+  // // get api for all orders 
+  // app.get('/orders', async(req,res)=>{
+  //   const cursor = orderCollection.find({});
+  //  const orders = await cursor.toArray();
+  //  res.send(orders);
+  // });
 
   // get single product 
 app.get('/coaching/:id', async(req,res)=>{
@@ -59,12 +59,17 @@ app.post('/coaching', async(req,res)=>{
   });
 
   // post api for ordering products 
-app.post('/orders', async(req,res)=>{
-    const item = req.body;
-    console.log('hit the post api again',item);
+app.post("/confirmOrder", async(req,res)=>{
+    // const item = req.body;
+    const result = await orderCollection.insertOne(req.body);
+     res.send(result);
   
-    const result = await orderCollection.insertOne(item);
-     res.json(result)
+  });
+  // my confirm order
+  app.get("/myOrders/:email", async(req,res)=>{
+    // const item = req.body;
+    const result = await orderCollection.find({email:req.params.email}).toArray();
+     res.send(result);
   
   });
 
