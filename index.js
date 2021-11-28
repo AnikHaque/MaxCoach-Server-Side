@@ -62,6 +62,7 @@ app.post('/coaching', async(req,res)=>{
 app.post("/confirmOrder", async(req,res)=>{
     // const item = req.body;
     const result = await orderCollection.insertOne(req.body);
+    
      res.send(result);
   
   });
@@ -69,6 +70,7 @@ app.post("/confirmOrder", async(req,res)=>{
   app.get("/myOrders/:email", async(req,res)=>{
     // const item = req.body;
     const result = await orderCollection.find({email:req.params.email}).toArray();
+    
      res.send(result);
   
   });
